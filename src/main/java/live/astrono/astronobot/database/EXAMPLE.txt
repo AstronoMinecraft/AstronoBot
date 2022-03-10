@@ -1,0 +1,23 @@
+new DatabaseQuery()
+        .query(new BasicQuery("QUERY COMMAND ?;", (statement) -> {
+            statement.setLong(1, row);
+        }))
+        .compile();
+
+new DatabaseQuery()
+        .query(new BasicQuery(""QUERY COMMAND ?;", (statement) -> {
+            statement.setInt(1, row);
+        }))
+
+        .compile()
+        .run((result) -> {
+            for (ResultSet data : result) {
+                ResultSetMetaData metaData = data.getMetaData();
+                int columnCount = metaData.getColumnCount();
+
+                for (int i = 1; i <= columnCount; i++) {
+                    resultList.put(metaData.getColumnName(i), data.getObject(i));
+                }
+                data.close();
+            }
+        });

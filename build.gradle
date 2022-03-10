@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+sourceSets.main.java.srcDirs = ['src']
+version '1.0.0'
+mainClassName = 'main.java.live.astrono.astronobot.AstronoBot'
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'main.java.live.astrono.astronobot.AstronoBot'
+        )
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'm2-dv8tion'
+        url = 'https://m2.dv8tion.net/releases'
+    }
+}
+
+dependencies {
+    implementation('org.mariadb.jdbc:mariadb-java-client:2.7.3')            // MySQL Client
+    implementation 'net.dv8tion:JDA:4.3.0_331'
+    implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'ch.qos.logback:logback-classic:1.2.5'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+task processSources(type: Sync) {
+    from sourceSets.main.java.srcDirs
+    inputs.property 'version', version
+    filter ReplaceTokens, tokens: [version: version]
+    into "$buildDir/src"
+}
+
+compileJava.source = processSources.outputs
