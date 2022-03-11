@@ -1,4 +1,4 @@
-package main.java.live.astrono.astronobot.bot.tasks;
+package main.java.live.astrono.astronobot.bot.tasks.sys;
 
 import main.java.live.astrono.astronobot.AstronoBot;
 import net.dv8tion.jda.api.entities.TextChannel;

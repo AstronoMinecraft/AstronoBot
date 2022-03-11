@@ -1,6 +1,9 @@
 package main.java.live.astrono.astronobot.bot.tasks;
 
 import main.java.live.astrono.astronobot.AstronoBot;
+import main.java.live.astrono.astronobot.bot.tasks.impl.NameUpdateTask;
+import main.java.live.astrono.astronobot.bot.tasks.sys.LoopingTask;
+import main.java.live.astrono.astronobot.bot.tasks.sys.OneTimeTask;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

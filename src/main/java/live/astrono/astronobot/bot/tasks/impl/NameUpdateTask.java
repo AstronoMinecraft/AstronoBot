@@ -1,8 +1,8 @@
-package main.java.live.astrono.astronobot.bot.tasks;
+package main.java.live.astrono.astronobot.bot.tasks.impl;
 
 import main.java.live.astrono.astronobot.AstronoBot;
+import main.java.live.astrono.astronobot.bot.tasks.sys.LoopingTask;
 import main.java.live.astrono.astronobot.sys.UsernameUtil;
-import main.java.live.astrono.astronobot.sys.util.Util;
 
 import java.util.concurrent.TimeUnit;
 
