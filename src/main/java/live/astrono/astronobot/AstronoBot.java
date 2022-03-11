@@ -19,6 +19,7 @@ import main.java.live.astrono.astronobot.bot.cmd.impl.privileged.MessageTemplate
 import main.java.live.astrono.astronobot.bot.cmd.impl.privileged.StopCommand;
 import main.java.live.astrono.astronobot.bot.events.ButtonEvent;
 import main.java.live.astrono.astronobot.bot.rolereact.RoleReactHandler;
+import main.java.live.astrono.astronobot.bot.tasks.TaskRegistry;
 import main.java.live.astrono.astronobot.bot.verification.VerifyListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -41,6 +42,7 @@ public class AstronoBot {
     public static final Gson GSON = new Gson();
     public static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
     private final CommandManager commandManager = new CommandManager();
+    private final TaskRegistry taskRegistry = new TaskRegistry();
 
     public static Map<Integer, Long> tickets = new HashMap<>();
     public static Integer ticket = 0;
@@ -114,6 +116,7 @@ public class AstronoBot {
 
         jda.awaitReady();
         commandManager.registerCommands();
+        taskRegistry.initialize();
 
         /*
         for (TextChannel textChannel : jda.getCategoryById(918917604880547840L).getTextChannels()) {
