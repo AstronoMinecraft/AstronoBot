@@ -16,5 +16,4 @@ gradle-app.setting
 .gradletasknamecache
 
 config.json
-/techquotes/
-/techquotes.txt
+/other_cache/
