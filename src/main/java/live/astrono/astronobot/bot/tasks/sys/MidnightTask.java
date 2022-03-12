@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 public interface MidnightTask extends LoopingTask {
     @Override
     default long getInitialStart() {
-        LocalDateTime now = LocalDateTime.now(TimeZone.getTimeZone("EST").toZoneId());
+        LocalDateTime now = LocalDateTime.now(TimeZone.getTimeZone("UTC").toZoneId());
         LocalDateTime nextRun = now.withHour(22).withMinute(0).withSecond(0);
         if (now.compareTo(nextRun) > 0) {
             nextRun = nextRun.plusDays(1);
