@@ -2,6 +2,7 @@ package main.java.live.astrono.astronobot.bot.tasks;
 
 import main.java.live.astrono.astronobot.AstronoBot;
 import main.java.live.astrono.astronobot.bot.tasks.impl.NameUpdateTask;
+import main.java.live.astrono.astronobot.bot.tasks.impl.ServerBoosterTask;
 import main.java.live.astrono.astronobot.bot.tasks.sys.LoopingTask;
 import main.java.live.astrono.astronobot.bot.tasks.sys.OneTimeTask;
 
@@ -17,7 +18,8 @@ public class TaskRegistry {
         if (AstronoBot.config.isDev) return;
         
         register(
-                new NameUpdateTask()
+                new NameUpdateTask(),
+                new ServerBoosterTask()
         );
     }
     
