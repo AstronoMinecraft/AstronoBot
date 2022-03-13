@@ -1,6 +1,7 @@
 package main.java.live.astrono.astronobot.bot.tasks.impl;
 
 import main.java.live.astrono.astronobot.AstronoBot;
+import main.java.live.astrono.astronobot.bot.tasks.sys.LoopingTask;
 import main.java.live.astrono.astronobot.bot.tasks.sys.MidnightTask;
 import main.java.live.astrono.astronobot.database.impl.DatabaseQuery;
 import main.java.live.astrono.astronobot.database.impl.queries.BasicQuery;
@@ -10,12 +11,14 @@ import net.dv8tion.jda.api.entities.Member;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class ServerBoosterTask implements MidnightTask {
     @Override
     public void run() {
-        Guild guild = AstronoBot.getJda().getGuildById(952095317115953152L);
+        Guild guild = AstronoBot.getJda().getGuildById(934747993356251156L);
         ArrayList<String> mentions = new ArrayList<>();
+        System.out.println("Checking for server boosters...");
 
         if (guild != null) {
             guild.findMembers((member -> member.getTimeBoosted() != null)).onSuccess((members) -> {
@@ -41,12 +44,13 @@ public class ServerBoosterTask implements MidnightTask {
                                         }))
                                         .compile()
                                         .run((rslt) -> {
-                                            if (result.isEmpty()) {
+                                            if (rslt.isEmpty()) {
                                                 return;
                                             }
 
                                             ResultSet tbl = rslt.getResult();
 
+                                            System.out.println(member.getIdLong() + " : " + tbl.getString("uuid"));
 
                                             new DatabaseQuery()
                                                     .query(new BasicQuery("UPDATE players SET gold = ? WHERE uuid = ?", (statement) -> {
@@ -66,5 +70,7 @@ public class ServerBoosterTask implements MidnightTask {
                 guild.pruneMemberCache();
             });
         }
+
+        System.out.println("Awarded the server boosters Astrono Gold!");
     }
 }
