@@ -67,10 +67,9 @@ public class VerifyListener extends ListenerAdapter {
                                                     })).compile();
                                         } else {
                                             new DatabaseQuery()
-                                                    .query(new BasicQuery("INSERT INTO verified_users (uuid, username, discordId) VALUES (?,?,?)", (statement) -> {
+                                                    .query(new BasicQuery("INSERT INTO verified_users (uuid, discordId) VALUES (?,?,?)", (statement) -> {
                                                         statement.setString(1, uuid);
-                                                        statement.setString(2, username);
-                                                        statement.setLong(3, event.getAuthor().getIdLong());
+                                                        statement.setLong(2, event.getAuthor().getIdLong());
                                                     })).compile();
                                         }
                                     });

@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.Role;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class UsernameUtil {
     public static final long VERIFIED = AstronoBot.getConfig().permissionRoles.get("verified");
@@ -26,13 +27,13 @@ public class UsernameUtil {
         HashMap<Long, String> accounts = new HashMap<>();
 
         new DatabaseQuery()
-                .query(new BasicQuery("SELECT discordId AS discordId, username AS player FROM verified_users WHERE discordId IS NOT NULL AND username IS NOT NULL;"))
+                .query(new BasicQuery("SELECT discordId AS discordId, uuid FROM verified_users WHERE discordId IS NOT NULL AND uuid IS NOT NULL;"))
                 .compile()
                 .run((result) -> {
                     for (ResultSet set : result) {
                         try {
                             if (!accounts.containsKey(set.getLong("discordId"))) {
-                                accounts.put(set.getLong("discordId"), set.getString("player"));
+                                accounts.put(set.getLong("discordId"), getUsername(set.getString("uuid")));
                             }
                             // big funny bad table
                         } catch (Exception exception) {
@@ -84,7 +85,7 @@ public class UsernameUtil {
 
     public static void updateMember(Member member) {
         new DatabaseQuery()
-                .query(new BasicQuery("SELECT username AS name FROM verified_users WHERE discordId = ?;", (statement) -> {
+                .query(new BasicQuery("SELECT uuid FROM verified_users WHERE discordId = ?;", (statement) -> {
                     statement.setLong(1, member.getIdLong());
                 }))
                 .compile()
@@ -94,7 +95,27 @@ public class UsernameUtil {
                     }
 
                     ResultSet table = result.getResult();
-                    updateMember(member, table.getString("name"), member.getGuild().getRoleById(VERIFIED));
+                    updateMember(member, getUsername(table.getString("uuid")), member.getGuild().getRoleById(VERIFIED));
                 });
+    }
+
+    public static String getUsername(String uuid) {
+        AtomicReference<String> name = new AtomicReference<>();
+
+        new DatabaseQuery()
+                .query(new BasicQuery("SELECT username AS name FROM players WHERE uuid = ?;", (statement) -> {
+                    statement.setString(1, uuid);
+                }))
+                .compile()
+                .run((result) -> {
+                    if (result.isEmpty()) {
+                        return;
+                    }
+
+                    ResultSet table = result.getResult();
+                    name.set(table.getString("name"));
+                });
+
+        return name.get();
     }
 }

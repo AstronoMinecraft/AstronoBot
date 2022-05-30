@@ -54,7 +54,7 @@ public class ServerBoosterTask implements MidnightTask {
 
                                             new DatabaseQuery()
                                                     .query(new BasicQuery("UPDATE players SET gold = ? WHERE uuid = ?", (statement) -> {
-                                                        statement.setInt(1, tbl.getInt("gold") + 10);
+                                                        statement.setInt(1, tbl.getInt("gold") + 2);
                                                         statement.setString(2, table.getString("uuid"));
                                                     })).compile();
                                         });
@@ -64,7 +64,7 @@ public class ServerBoosterTask implements MidnightTask {
                 }
 
                 Objects.requireNonNull(guild.getTextChannelById(952095317115953152L))
-                        .sendMessage(String.join(" ", mentions) + " have all been given **10 Astrono Gold** for boosting one day.")
+                        .sendMessage(String.join(" ", mentions) + " have all been given **2 Astrono Gold** for boosting one day.")
                         .queue();
 
                 guild.pruneMemberCache();
